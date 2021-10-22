@@ -202,7 +202,7 @@ public class ShootingScript : MonoBehaviour
     {
         float distance = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
-        print(distance);
+        //print(distance);
 
         if(distance < 3.5 && modelBool == false)
         {

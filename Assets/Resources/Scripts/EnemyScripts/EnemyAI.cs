@@ -10,7 +10,8 @@ public class EnemyAI : MonoBehaviour //This is the brains of the operation.
         ChaseTarget,
         Attacking
     }
-    
+
+    public float moveSpeed = 5f;
     public float roamRadius = 20f;
     public float detectionRadius = 20f;
     public float attackRange = 10f;
@@ -21,8 +22,6 @@ public class EnemyAI : MonoBehaviour //This is the brains of the operation.
     private EnemyMovement enemyMovement;
     private EnemyAttack enemyAttack;
 
-    private Vector3 startingPosition; //The enemy origin from where it will roam
-    private Vector3 walkPoint; //The position it should walk to
 
     private GameObject player;
 
@@ -33,11 +32,6 @@ public class EnemyAI : MonoBehaviour //This is the brains of the operation.
         player = GameObject.FindGameObjectWithTag("Player");
         currentEnemyState = EnemyState.Roaming;
     }
-    void Start()
-    {
-        startingPosition = transform.position;
-        walkPoint = GetRoamingPoint();
-    }
 
     private void Update()
     {
@@ -47,10 +41,9 @@ public class EnemyAI : MonoBehaviour //This is the brains of the operation.
 
                 FindTarget(); //Check if any target is near, for now that's the player.
 
-                //The brains tell the body where to go!
-                enemyMovement.SetTargetPos(walkPoint);
+                //If no target, Roam.
+                enemyMovement.Roam();
 
-                Roam();
                 break;
             case EnemyState.ChaseTarget:
                 enemyMovement.SetTargetPos(player.transform.position); //Make body move towards the player.
@@ -77,29 +70,13 @@ public class EnemyAI : MonoBehaviour //This is the brains of the operation.
                 }
                 else
                 {
-                    enemyAttack.Shoot(false); //Stop shooting
-                    enemyMovement.ControlMovement(true);
+                    enemyAttack.Shoot(false); //Stop shooting.
+                    enemyMovement.ControlMovement(true); //Start moving again.
                 }
                         
                 break;
         }
             
-    }
-    private Vector3 GetRoamingPoint()
-    {
-        //Startingposition plus random direction multiplied by a random distance.
-        return startingPosition + Utils.GetRandomDirNoY() * Random.Range(10f, roamRadius); 
-
-    }
-    private void Roam()
-    {
-        //Check if the body has reached the target roaming point
-        if (Vector3.Distance(transform.position, walkPoint) < 0.1f)
-        {
-            //The body has reached target.
-            //Brain needs to create new target
-            walkPoint = GetRoamingPoint();
-        }
     }
     private void FindTarget()
     {
@@ -109,10 +86,10 @@ public class EnemyAI : MonoBehaviour //This is the brains of the operation.
             currentEnemyState = EnemyState.ChaseTarget;
         }
     }
+
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, roamRadius);
     }
-
-
 }
