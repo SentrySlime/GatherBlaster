@@ -18,7 +18,10 @@ public class ThirdPersonMovement : MonoBehaviour
     [Header("Gravity")]
     public float jumpSpeed = 8;
     public float gravityEffect = 9.8f;
-    float vSpeed = 0;
+
+    public float gravityMultiplier;
+
+    public float vSpeed = 0;
 
     private void Awake()
     {
@@ -42,18 +45,22 @@ public class ThirdPersonMovement : MonoBehaviour
         //Check if character controller is grounded
         if(controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space))
             {
                 //if you are grounded and you press space you apply speed to the axis.y
                 vSpeed = jumpSpeed;
             }
             else
-                //if the character is simply grounded that speed is 0
+                //if the character is grounded that speed is 0
                 vSpeed = 0;
         }
 
         //And if the controller is in the air we apply "gravity" and move the controller downwards
-        vSpeed -= gravityEffect * Time.deltaTime;
+
+        //vSpeed -= gravityEffect * Time.deltaTime;
+
+        vSpeed += Physics.gravity.y * gravityMultiplier * Time.deltaTime;
+
         Vector3 tempgrav = new Vector3(direction.x, vSpeed, direction.z);
         controller.Move(tempgrav * Time.deltaTime);
 
@@ -85,6 +92,11 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector3 GetPlayerPosition()
     {
         return transform.position;
+    }
+
+    void HandleGravity()
+    {
+
     }
 
 }
