@@ -21374,8 +21374,8 @@ MonoBehaviour:
   walkSpeed: 13.5
   runmultiplier: 18.5
   rotationFactorPerFrame: 9
-  maxJumpHeight: 12
-  maxJumpTime: 1
+  maxJumpHeight: 10
+  maxJumpTime: 1.1
   maxFallSpeed: 40
 --- !u!4 &1641556985
 Transform:
