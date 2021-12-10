@@ -46,6 +46,8 @@ public class ShootingScript : MonoBehaviour
     void Start()
     {
         currentHitDistance = maxDistance;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     MeshRenderer lastMesh;
@@ -136,7 +138,9 @@ public class ShootingScript : MonoBehaviour
                 {
                     //If raycast hit nothing you shoot the bullet stright forward
                     rb.GetComponent<Rigidbody>().AddForce(transform.forward * projectileSpeed, ForceMode.Impulse);
+
                     Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * maxDistance, Color.red, 2);
+
                     currentHitDistance = maxDistance;
                 }
 
@@ -156,7 +160,6 @@ public class ShootingScript : MonoBehaviour
                         currentHitDistance = hit.distance;
                         //You create a random direction
                         Quaternion tempRotation = Random.rotation;
-                        //float tempSpeed = + Random.Range(-20, 20);
 
                         float minYOffset = Random.Range(-shotgunOffset, 0);
                         float maxYOffset = Random.Range(shotgunOffset, 0);
@@ -170,7 +173,28 @@ public class ShootingScript : MonoBehaviour
                         
                         Vector3 finalDirection = (hit.point - barrel.transform.position).normalized;
 
-                        //float tempSpeed = projectileSpeed + Random.Range(-20, 20);
+                        //then adds force to that projectile
+                        rb.GetComponent<Rigidbody>().AddForce(finalDirection * projectileSpeed, ForceMode.Impulse);
+
+                    }
+                    else
+                    {
+
+                        currentHitDistance = maxDistance;
+                        //You create a random direction
+                        Quaternion tempRotation = Random.rotation;
+
+                        float minYOffset = Random.Range(-shotgunOffset, 0);
+                        float maxYOffset = Random.Range(shotgunOffset, 0);
+
+                        float minXoffset = Random.Range(-shotgunOffset, 0);
+                        float maxXoffset = Random.Range(shotgunOffset, 0);
+
+                        Vector3 projectileSpawn = new Vector3(((minXoffset + maxXoffset / 1.5f) + 0.5f), ((minYOffset + maxYOffset / 1.5f) + 0.5f), 0);
+
+                        GameObject rb = Instantiate(projectile, barrel.transform.position - barrel.transform.right * projectileSpawn.x + barrel.transform.up * projectileSpawn.y, Quaternion.identity);
+
+                        Vector3 finalDirection = (transform.forward - barrel.transform.position).normalized;
 
                         //then adds force to that projectile
                         rb.GetComponent<Rigidbody>().AddForce(finalDirection * projectileSpeed, ForceMode.Impulse);
