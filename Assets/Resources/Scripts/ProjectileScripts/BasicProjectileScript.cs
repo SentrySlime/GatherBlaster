@@ -47,7 +47,8 @@ public class BasicProjectileScript : MonoBehaviour
             if (other.CompareTag("Enemy"))
             {
                 EnemyHealth tempEnemy = other.gameObject.GetComponentInParent<EnemyHealth>();
-                tempEnemy.ReduceHealth(3);
+                if(tempEnemy != null)
+                    tempEnemy.ReduceHealth(3);
                 gameObject.SetActive(false);
 
             }

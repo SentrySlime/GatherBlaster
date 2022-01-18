@@ -46,8 +46,13 @@ public class ShootingScript : MonoBehaviour
     void Start()
     {
         currentHitDistance = maxDistance;
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+
+        //#if UNITY_EDITOR
+        //        Cursor.lockState = CursorLockMode.None;
+        //        Cursor.visible = true;
+        //#endif
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     MeshRenderer lastMesh;
@@ -169,7 +174,7 @@ public class ShootingScript : MonoBehaviour
 
                         Vector3 projectileSpawn = new Vector3(((minXoffset + maxXoffset / 1.5f) + 0.5f), ((minYOffset + maxYOffset / 1.5f) + 0.5f), 0);
 
-                        GameObject rb = Instantiate(projectile, barrel.transform.position - barrel.transform.right * projectileSpawn.x + barrel.transform.up * projectileSpawn.y, Quaternion.identity);
+                        GameObject rb = Instantiate(projectile, barrel.transform.position - cameraObject.transform.right * projectileSpawn.x + cameraObject.transform.up * projectileSpawn.y, Quaternion.identity);
                         
                         Vector3 finalDirection = (hit.point - barrel.transform.position).normalized;
 
@@ -192,12 +197,12 @@ public class ShootingScript : MonoBehaviour
 
                         Vector3 projectileSpawn = new Vector3(((minXoffset + maxXoffset / 1.5f) + 0.5f), ((minYOffset + maxYOffset / 1.5f) + 0.5f), 0);
 
-                        GameObject rb = Instantiate(projectile, barrel.transform.position - barrel.transform.right * projectileSpawn.x + barrel.transform.up * projectileSpawn.y, Quaternion.identity);
+                        GameObject rb = Instantiate(projectile, barrel.transform.position - cameraObject.transform.right * projectileSpawn.x + cameraObject.transform.up * projectileSpawn.y, Quaternion.identity);
 
                         Vector3 finalDirection = (transform.forward - barrel.transform.position).normalized;
 
                         //then adds force to that projectile
-                        rb.GetComponent<Rigidbody>().AddForce(finalDirection * projectileSpeed, ForceMode.Impulse);
+                        rb.GetComponent<Rigidbody>().AddForce(cameraObject.transform.forward * projectileSpeed, ForceMode.Impulse);
 
                     }
                 }

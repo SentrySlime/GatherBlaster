@@ -17,18 +17,17 @@ public class EnemyAttack : MonoBehaviour
     public float projectileTravelDistance = 2f;
     public int bulletDamage = 10;
 
-
     private void Awake()
     {
         barrel = transform.Find("Barrel").gameObject;
         //RequestNewAttackPrefab(gameObject.transform.position);
     }
 
-
     void Update()
     {
         
     }
+
     public void RequestNewAttackPrefab(GameObject target)
     {
         //Before calling the method for our pattern of choice we need to correctly set the bulletinformation it needs.
@@ -54,7 +53,6 @@ public class EnemyAttack : MonoBehaviour
                 Debug.LogError("No patterncontroller attached to attackPatternPrefab: " + currentAttackPrefab);
             }
             
-
             currentAttackPrefab.SetActive(true);
         }
         
